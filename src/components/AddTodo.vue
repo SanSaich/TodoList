@@ -2,7 +2,6 @@
     <form>
         <input 
             type="text"
-            v-model="inputTodoItem"
         >
         <button type="submit">Create</button>
     </form>

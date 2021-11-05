@@ -1,17 +1,21 @@
 <template>
   <div id="app">
     <section>
-      <List :lists="lists" />
+      <p>Логин</p>
+      <input v-model="login" type="text" >
+      <p>email</p>
+      <input v-model="email" type="text" >
+      <p>Пароль</p>
+      <input v-model="password" type="text" >
+      <button v-on:click="sendRequest()">GO</button>
+      <hr>
+      <List />
     </section>
     <section>
-      <h1 v-for="list of lists" :key="list.id">{{list.listName}}</h1>
+      <h1>Лист 1</h1>
       <AddTodo />
       <hr>
-      <TodoList 
-        v-for="list of lists" :key="list.id"
-        v-bind:todos="list.todos"
-        v-on:remove-todo="removeTodo"
-      />
+      <TodoList />
     </section>
   </div>
 </template>
@@ -25,39 +29,49 @@ export default {
   name: 'App',
   data() {
     return {
-      lists: [
-        { 
-          id: Date.now(),
-          listName: 'дела',
-          placeholder: 'Введите имя списка',
-          inputTodoItem: '',
-          todos: [
-            {id: 1, title: 'Купить хлеб', completed: false},
-            {id: 2, title: 'Купить масло', completed: false},
-            {id: 3, title: 'Купить соль', completed: false}
-          ]
-        },
-        {
-          id: (Date.now() * 2),
-          listName: 'команды',
-          placeholder: 'Введите имя списка',
-          inputTodoItem: '',
-          todos: [
-            {id: 1, title: 'беги', completed: false},
-            {id: 2, title: 'стой', completed: false},
-            {id: 3, title: 'сиди', completed: false}
-          ]
-        }
-      ]
+      login: '',
+      password: '',
+      email: '',
     }
   },
   components: {
     TodoList, AddTodo, List
   },
   methods: {
-        removeTodo(id) {
-          this.todos = this.todos.filter(t => t.id !== id)
-        },
+        async sendRequest(method = 'POST', requestUrl = 'user/register') {
+          const url = `http://sergey-melnikov-api.academy.smartworld.team/${requestUrl}`
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer 6h0t10ads',
+          }
+          // let formData = new FormData()
+          //  formData.append('name', 'SanSaich')
+          //  formData.append('email', 'sansaich@sansaich.ru')
+          //  formData.append('password', '123qwe')
+           
+          const body = {
+            name: this.login,
+            email: this.email,
+            password: this.password,
+          }
+          console.log(this.login);
+          console.log(this.password);
+          console.log(this.email);
+
+          await fetch(url, {
+            method: method,
+            body: JSON.stringify(body),
+            // body: formData,
+            headers: headers
+          }).then(response => {
+            if (response.ok) {
+              return console.log('ответ1:', response.json().then(data => console.log('ответ2:',data))); 
+            }
+            return response.json().then(error => console.log('ошибка:', error))
+          })
+        }
+
+        
     }
 }
 </script>
@@ -79,5 +93,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  hr {
+    width: 300px;
+    margin: 25px 0;
   }
 </style>

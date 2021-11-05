@@ -1,10 +1,8 @@
 <template>
     <div >
         <ul>
-            <li v-for="list of lists" :key="list.id">
-                <button @click="viewList(list.todos)">{{list.listName}}</button>
-                {{list.id}}
-                {{zaz}}
+            <li>
+                <button>123</button>
             </li>
         </ul>
     </div>
@@ -12,11 +10,8 @@
 
 <script>
 export default {
-    props: ['lists'],
     methods: {
-        viewList(todos) {
-            return console.log(todos);
-        }
+        
     }
 }
 
