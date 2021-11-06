@@ -1,40 +1,13 @@
 <template>
   <div id="app">
     <section>
-      <input placeholder="Логин" v-model="login" type="text" >
-      <input placeholder="email" v-model="email" type="text" >
-      <input placeholder="Пароль" v-model="password" type="text" >
-      <button 
-        v-on:click="sendRequest(
-          method = 'POST', 
-          requestUrl = 'user/register', 
-          body = {
-            name: login, 
-            email: email, 
-            password: password
-          }
-        )">
-        Регистрация
-      </button>
-      <button 
-        v-on:click="sendRequest(
-          method = 'POST', 
-          requestUrl = 'user/login', 
-          body = {
-            email: email, 
-            password: password
-          },
-          token = access_token
-        )">
-        Авторизация
-      </button>
-      <p>{{access_token}}</p>
+      <Form />
       <hr>
       <List />
       <button 
         v-on:click="sendRequest(
           method = 'GET', 
-          requestUrl = 'list?withs[0]=tasks',
+          requestUrl = 'list',
           body = null,
           token = access_token
         )">
@@ -52,6 +25,7 @@
 </template>
 
 <script>
+import Form from "@/components/Form";
 import TodoList from "@/components/TodoList";
 import AddTodo from "@/components/AddTodo";
 import List from "@/components/List";
@@ -60,42 +34,13 @@ import List from "@/components/List";
 export default {
   name: 'App',
   data() {
-    return {
-      login: '',
-      password: '',
-      email: '',
-      access_token: '',
-      lists: ''
-    }
+    return {}
   },
   components: {
-    TodoList, AddTodo, List
+    TodoList, AddTodo, List, Form
   },
   methods: { 
-    async sendRequest(method, requestUrl, body = null, token = "") {
-      const url = `http://sergey-melnikov-api.academy.smartworld.team/${requestUrl}`;
-      const headers = {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      };
-      
-      if (body) {body = JSON.stringify(body)}
-
-      await fetch(url, {
-          method: method,
-          body: body,
-          headers: headers,
-        }).then((response) => {
-        if (response.ok) {
-          return response.json().then((data) => {
-            console.log("ответ:", data);
-            this.access_token = data.data.access_token;
-            this.lists = data.data.items;
-          });
-        }
-        return response.json().then((error) => console.log("ошибка:", error));
-      });
-    },
+    
    },
   computed: {
    
@@ -117,12 +62,6 @@ export default {
   }
   section {
     flex: 0 1 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  section > {
-    margin: 25px 0;
   }
   hr {
     width: 300px;
