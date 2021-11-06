@@ -15,10 +15,10 @@ export default new Vuex.Store({
     updateLogin(state, payload) {
       state.login = payload;
     },
-    getToken(state, payload) {
-      state.access_token = payload.data.access_token;
+    saveToken(state, payload) {
+      state.access_token = payload;
     },
-    getLists(state, payload) {
+    saveLists(state, payload) {
       state.lists = payload.data.items;
     },
   },
@@ -27,7 +27,7 @@ export default new Vuex.Store({
       const url = `http://sergey-melnikov-api.academy.smartworld.team/${requestUrl}`;
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`,
       };
 
       if (body) {
@@ -41,10 +41,10 @@ export default new Vuex.Store({
       }).then((response) => {
         response.json().then((data) => {
           if (data.data.access_token) {
-            context.commit("getToken", data);
+            context.commit("saveToken", data.data.access_token);
           }
           if (data.data.items) {
-            context.commit("getLists", data);
+            context.commit("saveLists", data);
           }
         });
       });

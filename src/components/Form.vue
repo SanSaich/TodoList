@@ -38,15 +38,18 @@
 <script>
 import { mapState } from 'vuex';
 export default {
-    computed: mapState({
+    computed: {
+        ...mapState({
         login: {
-           get() {return this.$store.state.login},
-           set(value) {this.$store.commit('updateLogin', value)}
+            get() {return this.$store.state.login},
+            set(value) {this.$store.commit('updateLogin', value)}
 
-        },
-        email: state => state.email,
-        password: state => state.password
-    }),
+            },
+            email: state => state.email,
+            password: state => state.password
+    })
+    },
+        
     methods: {
         
     }
