@@ -1,15 +1,46 @@
 <template>
   <div id="app">
     <section>
-      <p>Логин</p>
-      <input v-model="login" type="text" >
-      <p>email</p>
-      <input v-model="email" type="text" >
-      <p>Пароль</p>
-      <input v-model="password" type="text" >
-      <button v-on:click="sendRequest()">GO</button>
+      <input placeholder="Логин" v-model="login" type="text" >
+      <input placeholder="email" v-model="email" type="text" >
+      <input placeholder="Пароль" v-model="password" type="text" >
+      <button 
+        v-on:click="sendRequest(
+          method = 'POST', 
+          requestUrl = 'user/register', 
+          body = {
+            name: login, 
+            email: email, 
+            password: password
+          }
+        )">
+        Регистрация
+      </button>
+      <button 
+        v-on:click="sendRequest(
+          method = 'POST', 
+          requestUrl = 'user/login', 
+          body = {
+            email: email, 
+            password: password
+          },
+          token = access_token
+        )">
+        Авторизация
+      </button>
+      <p>{{access_token}}</p>
       <hr>
       <List />
+      <button 
+        v-on:click="sendRequest(
+          method = 'GET', 
+          requestUrl = 'list?withs[0]=tasks',
+          body = null,
+          token = access_token
+        )">
+        получить список
+      </button>
+      <p>{{lists}}</p>
     </section>
     <section>
       <h1>Лист 1</h1>
@@ -23,7 +54,8 @@
 <script>
 import TodoList from "@/components/TodoList";
 import AddTodo from "@/components/AddTodo";
-import List from "@/components/List"
+import List from "@/components/List";
+// import { mapState } from "vuex";
 
 export default {
   name: 'App',
@@ -32,47 +64,42 @@ export default {
       login: '',
       password: '',
       email: '',
+      access_token: '',
+      lists: ''
     }
   },
   components: {
     TodoList, AddTodo, List
   },
-  methods: {
-        async sendRequest(method = 'POST', requestUrl = 'user/register') {
-          const url = `http://sergey-melnikov-api.academy.smartworld.team/${requestUrl}`
-          const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer 6h0t10ads',
-          }
-          // let formData = new FormData()
-          //  formData.append('name', 'SanSaich')
-          //  formData.append('email', 'sansaich@sansaich.ru')
-          //  formData.append('password', '123qwe')
-           
-          const body = {
-            name: this.login,
-            email: this.email,
-            password: this.password,
-          }
-          console.log(this.login);
-          console.log(this.password);
-          console.log(this.email);
+  methods: { 
+    async sendRequest(method, requestUrl, body = null, token = "") {
+      const url = `http://sergey-melnikov-api.academy.smartworld.team/${requestUrl}`;
+      const headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      };
+      
+      if (body) {body = JSON.stringify(body)}
 
-          await fetch(url, {
-            method: method,
-            body: JSON.stringify(body),
-            // body: formData,
-            headers: headers
-          }).then(response => {
-            if (response.ok) {
-              return console.log('ответ1:', response.json().then(data => console.log('ответ2:',data))); 
-            }
-            return response.json().then(error => console.log('ошибка:', error))
-          })
+      await fetch(url, {
+          method: method,
+          body: body,
+          headers: headers,
+        }).then((response) => {
+        if (response.ok) {
+          return response.json().then((data) => {
+            console.log("ответ:", data);
+            this.access_token = data.data.access_token;
+            this.lists = data.data.items;
+          });
         }
-
-        
-    }
+        return response.json().then((error) => console.log("ошибка:", error));
+      });
+    },
+   },
+  computed: {
+   
+  }
 }
 </script>
 
@@ -94,8 +121,10 @@ export default {
     flex-direction: column;
     align-items: center;
   }
+  section > {
+    margin: 25px 0;
+  }
   hr {
     width: 300px;
-    margin: 25px 0;
   }
 </style>
