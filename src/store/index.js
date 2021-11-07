@@ -59,10 +59,17 @@ export default new Vuex.Store({
         body: JSON.stringify(body),
         headers: headers,
       }).then((res) => {
-        res.json().then((data) => {
-          console.log(data);
-          context.commit("resReg", data.message);
-        });
+        if (res.ok) {
+          res.json().then((data) => {
+            console.log(data);
+            context.commit("resReg", data.message);
+          });
+        } else {
+          res.json().then((error) => {
+            console.log("ошибка:", error);
+            context.commit("resReg", error.email[0]);
+          });
+        }
       });
     },
 
@@ -82,8 +89,9 @@ export default new Vuex.Store({
             console.log(data.message);
             context.commit("saveToken", data.data.access_token);
           });
+        } else {
+          res.json().then((error) => console.log("ошибка:", error));
         }
-        res.json().then((error) => console.log("ошибка:", error));
       });
     },
   },
