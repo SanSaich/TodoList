@@ -24,7 +24,7 @@
             )">
             Авторизация
         </button>
-      <p>{{token}}</p>
+      <p>{{authMessage}}</p>
     </form>
 </template>
 
@@ -32,6 +32,11 @@
 <script>
 import { mapState, mapActions } from 'vuex';
 export default {
+    mounted() {
+            if (localStorage.getItem("access_token")) {
+                this.$store.dispatch('sendLists');
+            }
+    },
     name: 'Form',
     data() {
         return {
@@ -43,21 +48,24 @@ export default {
     computed: 
         mapState({
             message: state => state.message,
-            token: state => state.access_token ? "Logged!" : "False",
+            authMessage: state => localStorage.getItem("access_token") ? "Logged!" : state.messageLogin,
         }),
         
             
         
     methods: {
-        ...mapActions( ['sendReg', 'sendLogin'] ),
+        ...mapActions( ['sendReg', 'sendLogin' ] ),
         sendRequest(param) {
             return this.sendReg(param);
         },
         sendLog(param) {
             return this.sendLogin(param);
-        }
+        },
+        
     }
 }
+
+
 
 </script>
 

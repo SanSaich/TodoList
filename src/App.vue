@@ -4,16 +4,6 @@
       <Form />
       <hr>
       <List />
-      <button 
-        v-on:click="sendRequest(
-          method = 'GET', 
-          requestUrl = 'list',
-          body = null,
-          token = access_token
-        )">
-        получить список
-      </button>
-      <!-- <p>{{lists}}</p> -->
     </section>
     <section>
       <h1>Лист 1</h1>

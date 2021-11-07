@@ -1,18 +1,24 @@
 <template>
     <div >
-        <ul>
+        <ul v-for="list of getLists" :key="list.id">
             <li>
-                <button>123</button>
+                <p>{{list.name}}</p>
             </li>
         </ul>
     </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
     methods: {
         
-    }
+    },
+    computed: 
+        mapState({
+            getLists: state => state.lists
+        })
+    
 }
 
 </script>
