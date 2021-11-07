@@ -1,57 +1,61 @@
 <template>
-    <form>
+    <form @submit.prevent>
         <input placeholder="Логин" v-model="login" type="text" >
-        <p>{{login}}</p>
         <input placeholder="email" v-model="email" type="text" >
-        <p>{{email}}</p>
         <input placeholder="Пароль" v-model="password" type="text" >
-        <p>{{password}}</p>
-        <button 
+        <button type="button"
             v-on:click="sendRequest(
-            method = 'POST', 
-            requestUrl = 'user/register', 
-            body = {
-                name: login, 
-                email: email, 
-                password: password
-            }
+                body = {
+                    name: login, 
+                    email: email, 
+                    password: password
+                }
             )">
             Регистрация
         </button>
-        <button 
-            v-on:click="sendRequest(
-            method = 'POST', 
-            requestUrl = 'user/login', 
-            body = {
-                email: email, 
-                password: password
-            },
-            token = access_token
+        <p>{{message}}</p>
+    
+        <button type="button"
+            v-on:click="sendLog(
+                body = {
+                    email: email, 
+                    password: password
+                }
             )">
             Авторизация
         </button>
-      <p>{{access_token}}</p>
+      <p>{{token}}</p>
     </form>
 </template>
 
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
-    computed: {
-        ...mapState({
-        login: {
-            get() {return this.$store.state.login},
-            set(value) {this.$store.commit('updateLogin', value)}
-
-            },
-            email: state => state.email,
-            password: state => state.password
-    })
+    name: 'Form',
+    data() {
+        return {
+            login: "",
+            password: "",
+            email: "",
+        }
     },
+    computed: 
+        mapState({
+            message: state => state.message,
+            token: state => state.access_token ? "Logged!" : "False",
+        }),
+        
+            
         
     methods: {
-        
+        ...mapActions( ['sendReg', 'sendLogin'] ),
+        sendRequest(param) {
+            return this.sendReg(param);
+        },
+        sendLog(param) {
+            return this.sendLogin(param);
+        }
     }
 }
 

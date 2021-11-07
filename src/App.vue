@@ -13,7 +13,7 @@
         )">
         получить список
       </button>
-      <p>{{lists}}</p>
+      <!-- <p>{{lists}}</p> -->
     </section>
     <section>
       <h1>Лист 1</h1>
