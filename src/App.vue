@@ -54,7 +54,7 @@ export default {
     flex: 0 1 20%;
   }
   .section-right {
-    flex: 1 1 auto;
+    flex: 0 1 80%;
   }
   hr {
     width: 300px;
