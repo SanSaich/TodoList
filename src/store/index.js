@@ -31,7 +31,7 @@ export default new Vuex.Store({
   actions: {
     async sendReg(context, body) {
       const url =
-        "http://sergey-melnikov-api.academy.smartworld.team/user/register";
+        "https://sergey-melnikov-api.academy.smartworld.team/user/register";
       const headers = {
         "Content-Type": "application/json",
       };
@@ -56,7 +56,7 @@ export default new Vuex.Store({
 
     async sendLogin(context, body) {
       const url =
-        "http://sergey-melnikov-api.academy.smartworld.team/user/login";
+        "https://sergey-melnikov-api.academy.smartworld.team/user/login";
       const headers = {
         "Content-Type": "application/json",
       };
@@ -84,7 +84,7 @@ export default new Vuex.Store({
     },
 
     async getLists(context) {
-      const url = "http://sergey-melnikov-api.academy.smartworld.team/list";
+      const url = "https://sergey-melnikov-api.academy.smartworld.team/list";
       const token = localStorage.getItem("access_token");
       console.log(token);
       const headers = {
@@ -103,7 +103,7 @@ export default new Vuex.Store({
     },
 
     async getListId(context, id) {
-      const url = `http://sergey-melnikov-api.academy.smartworld.team/task?filter[0][0]=list_id&filter[0][1]==&filter[0][2]=${id}`;
+      const url = `https://sergey-melnikov-api.academy.smartworld.team/task?filter[0][0]=list_id&filter[0][1]==&filter[0][2]=${id}`;
       const token = localStorage.getItem("access_token");
       const headers = {
         "Content-Type": "application/json",
