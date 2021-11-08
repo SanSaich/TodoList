@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    nameList: "",
     token: false,
     lists: "",
     list: "",
@@ -12,6 +13,9 @@ export default new Vuex.Store({
     messageLogin: "",
   },
   mutations: {
+    saveNameList(state, payload) {
+      state.nameList = payload;
+    },
     saveList(state, payload) {
       state.list = payload;
     },
@@ -102,7 +106,7 @@ export default new Vuex.Store({
       });
     },
 
-    async getListId(context, id) {
+    async getListId(context, [id, name]) {
       const url = `https://sergey-melnikov-api.academy.smartworld.team/task?filter[0][0]=list_id&filter[0][1]==&filter[0][2]=${id}`;
       const token = localStorage.getItem("access_token");
       const headers = {
@@ -116,6 +120,8 @@ export default new Vuex.Store({
         res.json().then((res) => {
           console.log(res);
           context.commit("saveList", res.data.items);
+          console.log(name);
+          context.commit("saveNameList", name);
         });
       });
     },

@@ -1,10 +1,19 @@
 <template>
     <div>
-        <AddTodo />
-        {{getList}}
-        <ul>
-           
-        </ul>
+        <div class="title">
+            <p>{{nameList}}</p>
+        </div>
+        <div class="list">
+            <ul v-for="item of getList" :key="item.id">
+                <div class="item">
+                    <input type="checkbox" name="" id="">
+                    <li>{{item.name}}</li>
+                </div>
+            </ul>
+        </div>
+        <div class="add-todo">
+            <AddTodo />
+        </div>
     </div>
 </template>
 
@@ -19,7 +28,8 @@ export default {
     },
     computed: 
         mapState({
-            getList: state => state.list
+            getList: state => state.list,
+            nameList: state => state.nameList
         })
 }
 </script>
@@ -29,5 +39,8 @@ ul {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+.title {
+    font-size: 20px;
 }
 </style>

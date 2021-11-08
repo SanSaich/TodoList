@@ -2,7 +2,7 @@
     <div >
         <ul v-for="list of getLists" :key="list.id">
             <li>
-                <p v-on:click="getList(list.id)">{{list.name}}</p>
+                <p v-on:click="getList([list.id, list.name])">{{list.name}}</p>
             </li>
         </ul>
     </div>
