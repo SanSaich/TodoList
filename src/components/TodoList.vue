@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
         <div class="title">
             <p>{{nameList}}</p>
         </div>
@@ -35,12 +35,32 @@ export default {
 </script>
 
 <style scoped>
+template {
+    height: 100%;
+}
+.container {
+min-height: 100%;
+display: flex;
+flex-direction: column;
+}
 ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
+li {
+    margin-left: 10px;
+}
 .title {
     font-size: 20px;
+}
+.item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.list {
+    flex: 1 1 auto;
 }
 </style>
