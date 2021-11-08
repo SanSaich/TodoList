@@ -1,19 +1,26 @@
 <template>
     <div>
+        <AddTodo />
+        {{getList}}
         <ul>
-            <TodoItem />
+           
         </ul>
     </div>
 </template>
 
 <script>
-import TodoItem from "@/components/TodoItem"
 
+import { mapState } from "vuex";
+import AddTodo from "@/components/AddTodo";
 export default {
+    name: 'TodoList',
     components: {
-        TodoItem
+        AddTodo
     },
-   
+    computed: 
+        mapState({
+            getList: state => state.list
+        })
 }
 </script>
 

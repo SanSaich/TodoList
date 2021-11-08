@@ -1,14 +1,10 @@
 <template>
   <div id="app">
-    <section>
+    <section class="section-left">
       <Form />
-      <hr>
       <List />
     </section>
-    <section>
-      <h1>Лист 1</h1>
-      <AddTodo />
-      <hr>
+    <section class="section-right">
       <TodoList />
     </section>
   </div>
@@ -17,9 +13,7 @@
 <script>
 import Form from "@/components/Form";
 import TodoList from "@/components/TodoList";
-import AddTodo from "@/components/AddTodo";
 import List from "@/components/List";
-// import { mapState } from "vuex";
 
 export default {
   name: 'App',
@@ -27,7 +21,7 @@ export default {
     return {}
   },
   components: {
-    TodoList, AddTodo, List, Form
+    TodoList, List, Form
   },
   methods: { 
     
@@ -45,13 +39,22 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 40px;
+    margin: 40px auto;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    max-width: 1200px;
+
   }
   section {
-    flex: 0 1 50%;
+    border: 1px solid grey;
+    padding: 20px;
+  }
+  .section-left {
+    flex: 0 1 20%;
+  }
+  .section-right {
+    flex: 1 1 auto;
   }
   hr {
     width: 300px;

@@ -1,31 +1,34 @@
 <template>
-    <form @submit.prevent>
-        <input placeholder="Логин" v-model="login" type="text" >
-        <input placeholder="email" v-model="email" type="text" >
-        <input placeholder="Пароль" v-model="password" type="text" >
-        <button type="button"
-            v-on:click="sendRequest(
-                body = {
-                    name: login, 
-                    email: email, 
-                    password: password
-                }
-            )">
-            Регистрация
-        </button>
-        <p>{{message}}</p>
-    
-        <button type="button"
-            v-on:click="sendLog(
-                body = {
-                    email: email, 
-                    password: password
-                }
-            )">
-            Авторизация
-        </button>
-      <p>{{authMessage}}</p>
-    </form>
+    <div>
+        <form v-if="(authMessage !== 'Logged!')" @submit.prevent>
+            <input placeholder="Логин" v-model="login" type="text" >
+            <input placeholder="email" v-model="email" type="text" >
+            <input placeholder="Пароль" v-model="password" type="text" >
+            <button type="button"
+                v-on:click="sendRequest(
+                    body = {
+                        name: login, 
+                        email: email, 
+                        password: password
+                    }
+                )">
+                Регистрация
+            </button>
+            <p>{{message}}</p>
+        
+            <button type="button"
+                v-on:click="sendLog(
+                    body = {
+                        email: email, 
+                        password: password
+                    }
+                )">
+                Авторизация
+            </button>
+        
+        </form>
+        <p class="title">{{authMessage}}</p>
+    </div>
 </template>
 
 
@@ -34,7 +37,8 @@ import { mapState, mapActions } from 'vuex';
 export default {
     mounted() {
             if (localStorage.getItem("access_token")) {
-                this.$store.dispatch('sendLists');
+                this.$store.dispatch('getLists');
+                this.$store.commit('resToken')
             }
     },
     name: 'Form',
@@ -48,7 +52,7 @@ export default {
     computed: 
         mapState({
             message: state => state.message,
-            authMessage: state => localStorage.getItem("access_token") ? "Logged!" : state.messageLogin,
+            authMessage: state => state.token ? "Logged!" : state.messageLogin,
         }),
         
             
@@ -78,5 +82,9 @@ export default {
     input,
     button {
         margin-bottom: 10px;
+    }
+    .title {
+        color: green;
+        font-size: 20px;
     }
 </style>

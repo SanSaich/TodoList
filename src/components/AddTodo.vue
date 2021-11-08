@@ -7,6 +7,13 @@
     </form>
 </template>
 
+<script>
+export default {
+    name: 'AddTodo',
+}
+</script>
+
+
 <style scoped>
     form {
         display: flex;
