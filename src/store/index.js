@@ -11,6 +11,7 @@ export default new Vuex.Store({
     list: "",
     message: "",
     messageLogin: "",
+    url: "https://sergey-melnikov-api.academy.smartworld.team/",
   },
   mutations: {
     saveNameList(state, payload) {
@@ -34,8 +35,7 @@ export default new Vuex.Store({
   },
   actions: {
     async sendReg(context, body) {
-      const url =
-        "https://sergey-melnikov-api.academy.smartworld.team/user/register";
+      const url = context.state.url + "user/register";
       const headers = {
         "Content-Type": "application/json",
       };
@@ -59,8 +59,7 @@ export default new Vuex.Store({
     },
 
     async sendLogin(context, body) {
-      const url =
-        "https://sergey-melnikov-api.academy.smartworld.team/user/login";
+      const url = context.state.url + "user/login";
       const headers = {
         "Content-Type": "application/json",
       };
@@ -88,7 +87,7 @@ export default new Vuex.Store({
     },
 
     async getLists(context) {
-      const url = "https://sergey-melnikov-api.academy.smartworld.team/list";
+      const url = context.state.url + "list";
       const token = localStorage.getItem("access_token");
       console.log(token);
       const headers = {
@@ -107,7 +106,9 @@ export default new Vuex.Store({
     },
 
     async getListId(context, [id, name]) {
-      const url = `https://sergey-melnikov-api.academy.smartworld.team/task?filter[0][0]=list_id&filter[0][1]==&filter[0][2]=${id}`;
+      const url =
+        context.state.url +
+        `task?filter[0][0]=list_id&filter[0][1]==&filter[0][2]=${id}`;
       const token = localStorage.getItem("access_token");
       const headers = {
         "Content-Type": "application/json",
@@ -124,6 +125,34 @@ export default new Vuex.Store({
           context.commit("saveNameList", name);
         });
       });
+    },
+
+    async setList(context, name) {
+      const url = context.state.url + "list";
+      const token = localStorage.getItem("access_token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      const body = {
+        attributes: {
+          name: name,
+        },
+      };
+      await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body),
+      })
+        .then((res) => {
+          res.json().then((res) => {
+            console.log(res);
+            // context.commit("saveList", res.data.items);
+            console.log(name);
+            // context.commit("saveNameList", name);
+          });
+        })
+        .then(() => context.dispatch("getLists"));
     },
   },
   modules: {},

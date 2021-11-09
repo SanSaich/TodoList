@@ -5,7 +5,7 @@
             <input placeholder="email" v-model="email" type="text" >
             <input placeholder="Пароль" v-model="password" type="text" >
             <button type="button"
-                v-on:click="sendRequest(
+                @click="sendRequest(
                     body = {
                         name: login, 
                         email: email, 
@@ -17,7 +17,7 @@
             <p>{{message}}</p>
         
             <button type="button"
-                v-on:click="sendLog(
+                @click="sendLog(
                     body = {
                         email: email, 
                         password: password
