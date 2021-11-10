@@ -82,6 +82,8 @@ export default {
     input,
     button {
         margin-bottom: 10px;
+        border: 1px solid grey;
+        border-radius: 5px;
     }
     .title {
         color: green;

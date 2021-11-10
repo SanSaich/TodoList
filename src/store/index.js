@@ -156,12 +156,13 @@ export default new Vuex.Store({
     async delListId(context, id) {
       const url = context.state.url + `list/delete/${id}`;
       const token = localStorage.getItem("access_token");
+      console.log(id);
       const headers = {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       };
       await fetch(url, {
-        method: "DEL",
+        method: "DELETE",
         headers: headers,
       })
         .then((res) => {

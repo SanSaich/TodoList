@@ -6,7 +6,7 @@
                 <div class="del" @click="delList(list.id)"></div>
             </li>
         </ul>
-        <div class="creat-list">
+        <div class="creat-list" v-if="resToken">
             <form @submit.prevent>
                 <hr>
                 <input placeholder="Введите название списка" v-model="listName" type="text" >
@@ -40,7 +40,8 @@ export default {
     },
     computed: 
         mapState({
-            getLists: state => state.lists
+            getLists: state => state.lists,
+            resToken: state => state.token
         })
     
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container"  v-if="resToken">
         <div class="title">
             <p>{{nameList}}</p>
         </div>
@@ -12,7 +12,13 @@
             </ul>
         </div>
         <div class="add-todo">
-            <AddTodo />
+            <div class="creat-item" v-if="resToken">
+            <form @submit.prevent>
+                <input placeholder="Введите Дело" v-model="name" type="text" >
+                <input type="checkbox" name="" id="">
+                <button type="button" @click="AddItem()">Добавить {{this.listName}}</button>
+            </form>
+        </div>
         </div>
     </div>
 </template>
@@ -20,16 +26,13 @@
 <script>
 
 import { mapState } from "vuex";
-import AddTodo from "@/components/AddTodo";
 export default {
     name: 'TodoList',
-    components: {
-        AddTodo
-    },
     computed: 
         mapState({
             getList: state => state.list,
-            nameList: state => state.nameList
+            nameList: state => state.nameList,
+            resToken: state => state.token
         })
 }
 </script>
@@ -42,6 +45,7 @@ template {
 min-height: 100%;
 display: flex;
 flex-direction: column;
+padding: 0;
 }
 ul {
     list-style: none;
@@ -62,5 +66,6 @@ li {
 }
 .list {
     flex: 1 1 auto;
+    margin: 0 auto;
 }
 </style>
