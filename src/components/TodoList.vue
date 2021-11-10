@@ -11,29 +11,43 @@
                 </div>
             </ul>
         </div>
-        <div class="add-todo">
-            <div class="creat-item" v-if="resToken">
-            <form @submit.prevent>
-                <input placeholder="Введите Дело" v-model="name" type="text" >
-                <input type="checkbox" name="" id="">
-                <button type="button" @click="AddItem()">Добавить {{this.listName}}</button>
-            </form>
-        </div>
+        <div class="add-todo" v-if="getList">
+            <div class="creat-item">
+                <form @submit.prevent>
+                    <input placeholder="Введите Дело" v-model="itemName" type="text" >
+                    <input type="checkbox" v-model="check">
+                    <span>Срочное</span>
+                    <button type="button" @click="addItem([itemName, check])">Добавить</button>
+                </form>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
     name: 'TodoList',
+    data() {
+        return {
+            itemName: "",
+            check: "",
+        }
+    },
     computed: 
         mapState({
             getList: state => state.list,
             nameList: state => state.nameList,
             resToken: state => state.token
-        })
+        }),
+    methods:{
+        ...mapActions( ['setItem'] ),
+        addItem(param) {
+            this.itemName = ""
+            return this.setItem(param);
+        },
+    }
 }
 </script>
 

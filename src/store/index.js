@@ -6,14 +6,19 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     nameList: "",
+    idList: "",
     token: false,
     lists: "",
     list: "",
+    userId: "",
     message: "",
     messageLogin: "",
     url: "https://sergey-melnikov-api.academy.smartworld.team/",
   },
   mutations: {
+    saveIdList(state, payload) {
+      state.idList = payload;
+    },
     saveNameList(state, payload) {
       state.nameList = payload;
     },
@@ -22,6 +27,9 @@ export default new Vuex.Store({
     },
     saveLists(state, payload) {
       state.lists = payload;
+    },
+    saveUserId(state, payload) {
+      state.userId = payload;
     },
     resReg(state, payload) {
       state.message = payload;
@@ -76,7 +84,8 @@ export default new Vuex.Store({
               localStorage.setItem("access_token", data.data.access_token);
               context.commit("resToken");
             })
-            .then(() => context.dispatch("getLists"));
+            .then(() => context.dispatch("getLists"))
+            .then(() => context.dispatch("getUserId"));
         } else {
           res.json().then((error) => {
             console.log("ошибка:", error);
@@ -123,6 +132,7 @@ export default new Vuex.Store({
           context.commit("saveList", res.data.items);
           console.log(name);
           context.commit("saveNameList", name);
+          context.commit("saveIdList", id);
         });
       });
     },
@@ -171,6 +181,61 @@ export default new Vuex.Store({
           });
         })
         .then(() => context.dispatch("getLists"));
+    },
+
+    async getUserId(context, email) {
+      const url =
+        context.state.url +
+        `user?filter[1][0]=email&filter[1][1]=like&filter[1][2]=${email}`;
+      const token = localStorage.getItem("access_token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      await fetch(url, {
+        method: "GET",
+        headers: headers,
+      }).then((res) => {
+        res.json().then((res) => {
+          console.log(res);
+          context.commit("saveUserId", res.data.items.id);
+        });
+      });
+    },
+
+    async setItem(context, [name, urgency]) {
+      const url = context.state.url + "task/create";
+      const token = localStorage.getItem("access_token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      const body = {
+        attributes: {
+          name: name,
+          is_completed: false,
+          list_id: context.state.idList,
+          executor_user_id: context.state.userId,
+          urgency: urgency + 1,
+        },
+      };
+      await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body),
+      })
+        .then((res) => {
+          res.json().then((res) => {
+            console.log(res);
+            console.log(name);
+          });
+        })
+        .then(() =>
+          context.dispatch("getListId", [
+            context.state.idList,
+            context.state.nameList,
+          ])
+        );
     },
   },
   modules: {},
