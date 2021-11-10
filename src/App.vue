@@ -39,7 +39,7 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin: 40px auto;
+    margin: 20px auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -48,6 +48,7 @@ export default {
   }
   section {
     border: 1px solid grey;
+    border-radius: 5px;
     padding: 20px;
   }
   .section-left {
@@ -55,6 +56,7 @@ export default {
   }
   .section-right {
     flex: 0 1 80%;
+    margin-left: 20px;
   }
   hr {
     width: 300px;

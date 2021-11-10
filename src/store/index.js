@@ -147,9 +147,26 @@ export default new Vuex.Store({
         .then((res) => {
           res.json().then((res) => {
             console.log(res);
-            // context.commit("saveList", res.data.items);
             console.log(name);
-            // context.commit("saveNameList", name);
+          });
+        })
+        .then(() => context.dispatch("getLists"));
+    },
+
+    async delListId(context, id) {
+      const url = context.state.url + `list/delete/${id}`;
+      const token = localStorage.getItem("access_token");
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      };
+      await fetch(url, {
+        method: "DEL",
+        headers: headers,
+      })
+        .then((res) => {
+          res.json().then((res) => {
+            console.log(res);
           });
         })
         .then(() => context.dispatch("getLists"));
